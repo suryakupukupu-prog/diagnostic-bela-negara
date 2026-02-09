@@ -230,11 +230,11 @@ button {
 }
 
 /* ===============================
-   FULL WIDTH RADAR CHART (🔥 FIX UTAMA)
+   FULL WIDTH RADAR CHART
    =============================== */
 .chart-wrapper {
     width: 100%;
-    max-width: 1100px; /* 🔥 KUNCI */
+    max-width: 1100px;
     margin: 0 auto;
     padding: 30px 10px;
 }
@@ -248,38 +248,6 @@ button {
 }
 
 /* ===============================
-   RESPONSIVE
-   =============================== */
-@media (max-width: 900px) {
-    #abilityChart {
-        max-width: 900px;
-    }
-}
-
-@media (max-width: 600px) {
-    .app {
-        padding: 10px;
-    }
-
-    .card {
-        padding: 20px;
-    }
-
-    #question-text {
-        font-size: 18px;
-    }
-
-    .action-buttons {
-        grid-template-columns: 1fr;
-    }
-
-    #abilityChart {
-        width: 100%;
-        height: auto;
-    }
-}
-
-/* ===============================
    ACTION BUTTONS
    =============================== */
 .action-buttons {
@@ -288,9 +256,42 @@ button {
     gap: 14px;
 }
 
+/* =====================================================
+   🔥 FULL SCREEN MOBILE MODE (INI KUNCINYA)
+   ===================================================== */
+@media (max-width: 600px) {
+    body {
+        background: #f4f6f8;
+    }
 
+    .app {
+        max-width: 100%;
+        margin: 0;
+        padding: 0;
+        min-height: 100vh;
+    }
 
+    .card {
+        min-height: 100vh;
+        border-radius: 0;
+        box-shadow: none;
+        margin: 0;
+        padding: 20px 16px;
+    }
 
+    .app-header {
+        padding: 20px 16px;
+    }
 
+    #question-text {
+        font-size: 18px;
+    }
 
+    .options {
+        gap: 12px;
+    }
 
+    .action-buttons {
+        grid-template-columns: 1fr;
+    }
+}
