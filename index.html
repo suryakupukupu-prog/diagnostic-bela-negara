@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Diagnostic Test Bela Negara</title>
+
+    <!-- FONT -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="app">
+
+    <!-- ================= HEADER ================= -->
+    <header class="app-header">
+        <h1>Diagnostic Test Bela Negara</h1>
+        <p>Asesmen Adaptif Berbasis Indikator Kompetensi</p>
+    </header>
+
+    <!-- ================= START SCREEN ================= -->
+    <section id="start-screen" class="card">
+        <h2>Identitas Peserta</h2>
+
+        <label for="nama">Nama Lengkap</label>
+        <input type="text" id="nama" placeholder="Masukkan nama">
+
+        <label for="kelas">Kelas</label>
+        <input type="text" id="kelas" placeholder="Contoh: X IPA 1">
+
+        <button class="primary-btn" onclick="mulaiQuiz()">
+            Mulai Diagnostic Test
+        </button>
+    </section>
+
+    <!-- ================= QUIZ SCREEN ================= -->
+    <section id="quiz-screen" class="card hidden">
+
+        <!-- TIMER -->
+        <div class="top-bar">
+            <div class="timer">
+                ⏱️ <span id="time">10:00</span>
+            </div>
+            <div id="progress-text" class="progress-text"></div>
+        </div>
+
+        <!-- PROGRESS BAR -->
+        <div class="progress">
+            <div id="progress-bar"></div>
+        </div>
+
+        <!-- QUESTION -->
+        <h2 id="question-text"></h2>
+
+        <!-- OPTIONS -->
+        <div id="options" class="options">
+            <button onclick="jawab('A')"></button>
+            <button onclick="jawab('B')"></button>
+            <button onclick="jawab('C')"></button>
+            <button onclick="jawab('D')"></button>
+        </div>
+    </section>
+
+    <!-- ================= RESULT SCREEN ================= -->
+    <section id="result-screen" class="card hidden">
+        <h2>Hasil Diagnostic Test</h2>
+
+        <pre id="result-text" class="result-box"></pre>
+
+        <div class="chart-section">
+            <h3>Visualisasi Kemampuan</h3>
+
+            <!-- 🔥 WRAPPER RESMI -->
+            <div class="chart-wrapper">
+                <canvas id="abilityChart"></canvas>
+            </div>
+        </div>
+
+        <div class="action-buttons">
+            <button disabled class="secondary-btn">
+                Unduh Hasil (CSV)
+            </button>
+            <button onclick="location.reload()" class="primary-btn">
+                Ulangi Tes
+            </button>
+        </div>
+    </section>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
+
+
+
+
+
+
+
+
