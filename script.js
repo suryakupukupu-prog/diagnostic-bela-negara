@@ -12,19 +12,19 @@ let quizAktif = true;
 let namaPeserta = "";
 let kelasPeserta = "";
 
-const TOTAL_SOAL = 10;
+const TOTAL_SOAL = 30;
 
 // ===============================
 // TIMER
 // ===============================
-let totalWaktu = 10 * 60;
+let totalWaktu = 30 * 60;
 let timerInterval = null;
 
 // ===============================
 // GOOGLE SHEET
 // ===============================
 const GOOGLE_SHEET_URL =
-"https://script.google.com/macros/s/AKfycbyvDmSONGrLWEEMzgeEsn9CUpWAWLWGERI5zldUYhVsNKITcCpT1hszGRcz96XAsg/exec";
+"https://script.google.com/macros/s/AKfycbybadya0UaulJF7dSkJBSAIikAZgtAMxcxabjnGM_HJt_bliZmk6VT4kC-D5ODBXH7w/exec";
 
 // ===============================
 // DIAGNOSTIC
@@ -212,17 +212,18 @@ function mulaiQuiz() {
     const namaInput = document.getElementById("nama");
     const kelasInput = document.getElementById("kelas");
 
-    const nama = namaInput.value.trim();
-    const kelas = kelasInput.value.trim();
-
-    if (!nama || !kelas) {
-        alert("Nama & kelas wajib diisi!");
+    if (!namaInput || !kelasInput) {
+        alert("Form identitas tidak ditemukan");
         return;
     }
 
-    // SIMPAN KE STATE (sudah bersih dari spasi)
-    namaPeserta = nama;
-    kelasPeserta = kelas;
+    namaPeserta = namaInput.value.trim();
+    kelasPeserta = kelasInput.value.trim();
+
+    if (!namaPeserta || !kelasPeserta) {
+        alert("Nama & kelas wajib diisi!");
+        return;
+    }
 
     initDiagnostic();
     mulaiTimer();
@@ -393,10 +394,13 @@ const skorAkhir = Math.round(total / (totalBobot || 1));
 
     document.getElementById("quiz-screen").style.display = "none";
     document.getElementById("result-screen").style.display = "block";
-    document.getElementById("result-text").innerText =
-`Skor Diagnostik Akhir: ${skorAkhir}%
+    document.getElementById("result-text").innerHTML = `
+<strong>Skor Diagnostik Akhir:</strong> ${skorAkhir}%<br><br>
+${ringkasanIndikator().replace(/\n/g,"<br>")}
+`;
 
-${ringkasanIndikator()}`;
+document.getElementById("ability-description").innerText =
+narasiKemampuan(skorAkhir);
    
     setTimeout(gambarGrafikKemampuan, 100);
 
@@ -407,18 +411,17 @@ ${ringkasanIndikator()}`;
 // GOOGLE SHEET
 // ===============================
 function kirimKeGoogleSheet(skorAkhir) {
+    const payload = {
+        nama: namaPeserta,
+        kelas: kelasPeserta,
+        skor_akhir: skorAkhir
+    };
+
     fetch(GOOGLE_SHEET_URL, {
         method: "POST",
         mode: "no-cors",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-            nama: namaPeserta,
-            kelas: kelasPeserta,
-            skor_akhir: skorAkhir,
-            indikator: diagnostic.indikator,
-            level_akhir: levelAktif,
-            waktu: new Date().toLocaleString("id-ID")
-        })
+        body: JSON.stringify(payload)
     });
 }
 
@@ -435,6 +438,21 @@ function kirimRealtimeKeGoogleSheet(status) {
             waktu: new Date().toISOString()
         })
     });
+    function narasiKemampuan(skor) {
+    if (skor >= 90) {
+        return "🔥 Kamu nasionalis garis keras (versi sehat). Jiwa patriotikmu kuat, paham konsep, dan siap jadi contoh. Tinggal jaga konsistensi — jangan cuma semangat pas upacara.";
+    } 
+    if (skor >= 80) {
+        return "🫡 Kamu sudah berjiwa patriotik. Paham esensi bela negara dan tahu cara menerapkannya. Sedikit penguatan konsep, kamu bisa naik level.";
+    }
+    if (skor >= 65) {
+        return "🙂 Jiwa bela negaramu ada, tapi masih situasional. Kadang peduli, kadang cuek. Dengan latihan dan pemahaman, potensimu bisa berkembang.";
+    }
+    if (skor >= 50) {
+        return "⚠️ Kamu belum konsisten dalam memahami bela negara. Bukan berarti anti, tapi perlu banyak refleksi dan penguatan nilai dasar.";
+    }
+    return "🚨 Waspada. Pemahaman bela negara masih sangat rendah. Ini saatnya belajar ulang dari konsep paling dasar — demi diri sendiri dan lingkungan.";
+}
 }
 
 // ===============================
